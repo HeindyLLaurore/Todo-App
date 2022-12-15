@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <title>account settings</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            margin-top: 20px;
+            background-color: #DBCBBD !important;
+        }
+
+        .btn-primary {
+            background-color: #B49780;
+            border-color: #B49780
+        }
+        .btn-primary:hover {
+            background-color: #C87941;
+            border-color: #C87941
+        }
+        .btn-primary:not(:disabled):not(.disabled):active,
+        .btn-primary:not(:disabled):not(.disabled).active,
+        .show>.btn-primary.dropdown-toggle {
+            background-color: #87431D;
+            border-color: #87431D
+        }
+
+        .btn-outline-primary {
+            color: #87431D;
+            background-color: transparent;
+            background-image: none;
+            border-color: #87431D
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #C87941;
+            border-color: #C87941
+        }
+
+        .btn-outline-primary:not(:disabled):not(.disabled):active,
+        .btn-outline-primary:not(:disabled):not(.disabled).active,
+        .show>.btn-outline-primary.dropdown-toggle {
+            background-color: #87431D;
+            border-color: #87431D
+        }
+
+        .form-control {
+            background-color: #D6B79E;
+            border-color: #87431D
+        }
+
+        .ui-w-80 {
+            width: 80px !important;
+            height: auto;
+        }
+
+        .btn-default {
+            border-color: rgba(24, 28, 33, 0.1);
+            background: rgba(0, 0, 0, 0);
+            color: #4E5155;
+        }
+
+        label.btn {
+            margin-bottom: 0;
+        }
+
+        .btn {
+            cursor: pointer;
+        }
+
+        .text-light {
+            color: #babbbc !important;
+        }
+
+        .card {
+            background-clip: padding-box;
+            box-shadow: 0 1px 4px rgba(24, 28, 33, 0.012);
+            background-color: #DBCBBD;
+        }
+
+        .row-bordered {
+            overflow: hidden;
+        }
+
+        .account-settings-fileinput {
+            position: absolute;
+            visibility: hidden;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        .account-settings-links .list-group-item.active {
+            font-weight: bold !important;
+        }
+
+        .account-settings-multiselect ~ .select2-container {
+            width: 100% !important;
+        }
+
+        .light-style .account-settings-links .list-group-item {
+            padding: 0.85rem 1.5rem;
+            border-color: rgba(24, 28, 33, 0.03) !important;
+            background-color: transparent;
+        }
+
+        .light-style .account-settings-links .list-group-item.active {
+            color: #4e5155 !important;
+            background-color: #D6B79E;
+        }
+
+        .light-style .account-settings-links .list-group-item {
+            padding: 0.85rem 1.5rem;
+            border-color: rgba(24, 28, 33, 0.03) !important;
+        }
+
+        .alert-warning {
+            color: #290001;
+            border-color: transparent;
+            background-color: #C87941;
+        }
+
+        .error {
+            color: #C87941;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+<div class="container light-style flex-grow-1 container-p-y">
+
+    <!-- ******************  form tag ************************************ -->
+    <form action="#" enctype="multipart/form-data" method="post" th:action="@{/user/accountSetting}"
+          th:object="${user}">
+        <h4 class="font-weight-bold py-3 mb-4"></h4>
+        <div class="card overflow-hidden">
+            <div class="row no-gutters row-bordered row-border-light">
+                <div class="col-md-3 pt-0">
+                    <div class="list-group list-group-flush account-settings-links">
+                        <img src="/coffee_bean.png" width="120" style="align-self: center">
+                        <a class="list-group-item list-group-item-action active" data-toggle="list"
+                           href="#account-general">Profile</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                           href="#account-change-password">Change password</a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                           href="#account-info">Info</a>
+                        <a class="list-group-item list-group-item-action" style="color: #87431D" href="/todo">Back to Task List</a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="account-general">
+
+                            <div class="card-body media align-items-center">
+                                <img alt="" class="d-block ui-w-80" th:src="${'/user/photo'}">
+                                <div class="media-body ml-4">
+
+                                    <!-- ******************  'Upload new photo' button ************************************ -->
+                                    <label class="btn btn-outline-primary">
+                                        Upload new photo
+                                        <input accept="image/png, image/jpeg" class="account-settings-fileinput" name="image" type="file">
+                                    </label> &nbsp;
+
+                                    <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
+                                </div>
+                            </div>
+                            <hr class="m-0">
+
+                            <div class="card-body">
+
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    <input class="form-control" th:field="*{firstName}" type="text">
+                                    <span class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">firstname error</span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Last Name</label>
+                                    <input class="form-control mb-1" th:field="*{lastName}" type="text">
+                                    <span class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">lastName error</span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">E-mail</label>
+                                    <input class="form-control mb-1" th:field="*{email}" type="text">
+                                    <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email error</span>
+
+                                    <div th:text="${message}" th:unless="${message == null}" class="alert alert-warning mt-3">
+                                        Message
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="account-change-password">
+                            <div class="card-body pb-2">
+
+                                <div class="form-group">
+                                    <label class="form-label">Current password</label>
+                                    <input class="form-control" th:field="*{currentPassword}" type="password">
+                                    <span class="error" th:if="${#fields.hasErrors('currentPassword')}" th:errors="*{currentPassword}">currentPassword error</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">New password</label>
+                                    <input class="form-control" th:field="*{newPassword}" type="password">
+                                    <span class="error" th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}">newPassword error</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Repeat new password</label>
+                                    <input class="form-control" th:field="*{newPasswordRepeat}" type="password">
+                                    <span class="error" th:if="${#fields.hasErrors('newPasswordRepeat')}" th:errors="*{newPasswordRepeat}">newPasswordRepeat error</span>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="account-info">
+                            <div class="card-body pb-2">
+
+                                <div class="form-group">
+                                    <label class="form-label">Personal Motto</label>
+                                    <textarea class="form-control" rows="5" th:field="*{motto}">Switch off. Recharge. Reboot.</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Birthday</label>
+                                    <input class="form-control" th:field="*{birthday}" type="date">
+                                    <span class="error" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}">birthday error</span>
+                                </div>
+                            </div>
+                            <hr class="m-0">
+                            <div class="card-body pb-2">
+                                <h6 class="mb-4">Contacts</h6>
+                                <div class="form-group">
+                                    <label class="form-label">Phone</label>
+                                    <input class="form-control" th:field="*{phone}" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-right mt-3">
+
+            <!-- ******************  'Save changes' button ************************************ -->
+            <button class="btn btn-primary" type="submit">Save changes</button>&nbsp;
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>7-day Planner</title>
+    <meta charset="utf-8">
+    <!--  This file has been downloaded from bootdey.com @bootdey on twitter -->
+    <!--  All snippets are MIT license http://bootdey.com/license -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Bootstrap Stuff -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+    .ui-w-80 {
+      width: 80px !important;
+      height: auto;
+    }
+    </style>
+	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript"></script>
+<!-- FontAwesome-->  
+    <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+<!-- Custom Styles--> 
+    
+	<style>
+	* {
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    margin-top:20px;
+    padding: 0px;
+    background-color:#EBE2DB;
+}
+
+.topBar{
+	background-color: #330001;
+	width: 100%;
+	height:80px;
+	position: absolute;
+	top: 0px;
+}
+
+.topLeft {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+    
+}
+
+.topLeft th{
+	font-weight: 600;
+	font-size: 110%;
+    padding-top: 10px;
+    padding-left: 10px;
+    color: #f6f2ef;
+    text-shadow:1px 0px 1px #f6f2ef;
+}
+
+.topLeft td{
+	padding-left: 10px;
+	color: #f6f2ef;
+	font-style:italic;
+	
+}
+
+.topRight{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	padding: 0px;
+}
+
+.topRight td{
+	padding: 10px;
+	padding-top: 10px;
+}
+
+.topRight a{
+	font-size: 110%;
+	color: #f6f2ef;
+}
+
+
+a.add {
+	color:#290001;
+	border: none;
+}
+
+div.outerContainer{
+    width: 90%;
+    height: 80%;
+}
+
+div.innerContainer{
+    border-radius: 10px;
+    background-color:#DBCBBD;
+}
+
+.todoContainer{
+    width: 100%;
+    display: flex;
+}
+
+.status{
+    position: relative;
+    top: 0px;
+    padding: 60px 1rem 0.5rem;
+    margin-top: 100px;
+    height: 900px;
+    width: 100%;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #290001da;
+    -ms-overflow-style: none;
+  	scrollbar-width: none;
+  	border-radius: 10px 10px 0px 0px;
+}
+
+.status::-webkit-scrollbar {
+  display: none;
+}
+
+div#Tuesday, div#Thursday, div#Saturday{
+	background-color: #d2bead;
+}
+
+.status h1{
+    position: absolute;
+    text-align:center; 
+    top: 0;
+    left: 0;
+    background-color:#d09062; 
+    color:#fbf2ea; 
+    margin: 0;
+    width: 100%;
+    padding: 7px;
+    text-shadow:-1px 0px 2px #290001da;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.todo{
+    background-color: #fff;
+    box-shadow: rgba(15,15,15,0.1) 0px 0px 0px 1px,
+        rgba(15,15,15,0.1) 0px 2px 4px;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0;
+}
+table.task {
+	width: 100%;
+	padding: 10px;
+}
+
+table.task td{
+	padding: 5px;
+}
+
+table.task th#title {
+	text-align: left;
+	border: none;
+}
+
+table.task td#category {
+	text-align: center;
+	vertical-align: middle;
+	border: 1px solid grey;
+	border-radius: 10px;
+}
+
+table.task td#priority {
+	text-align: right;
+	font-size: 80%;
+}
+
+table.task td#description {
+	text-align: left;
+	font-size: 90%;
+	height: fit-content;
+	
+}
+
+table.task td#dueDate {
+	text-align: left;
+	font-size: 80%;
+	border: none;
+	border-radius: 10px;
+}
+
+table.task td#Low{
+	background-color: #ffff80;
+	text-align: center;
+	font-size: 80%;
+	border-radius: 200px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
+	box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.05)
+		0px 1px 2px;
+}
+
+table.task td#Medium{
+	background-color: #ff944d;
+	text-align: center;
+	font-size: 80%;
+	border-radius: 200px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
+	box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.05)
+		0px 1px 2px;
+}
+
+table.task td#High{
+	background-color: #ff4d4d;
+	text-align: center;
+	font-size: 80%;
+	border-radius: 200px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
+	box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.05)
+		0px 1px 2px;
+}
+
+.delete{
+	text-decoration: none;
+	font-size: 120%;
+	text-align: center;
+}
+
+.add{
+	width: 80%;
+	box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.05)
+		0px 1px 2px;
+	text-align: center;
+}
+
+.add button{
+	width: 100%;
+	padding: 5px;
+	font-size: 200%;
+	text-shadow: 2px 1px grey;
+}
+	
+	</style>
+</head>
+
+<body style="background-color:#EBE2DB;">
+	<div class="topBar">
+		<table class="topLeft">
+			<tr>
+				<th>Your Planner</th>
+			</tr>
+			<tr>
+      			<td th:text="${user.motto}"></td>
+			</tr>
+		</table>
+      	<table class="topRight">
+      		<tr>
+      			<td><a href="/">Logout</a></td>
+      			<td><a href="/user/accountSetting" th:text="${user.first_name} + ' ' + ${user.last_name}"></a></td>
+      			<td><a href="/user/accountSetting"><img th:src="${'/user/photo'}" alt="" class="d-block ui-w-80"></a></td>
+      		</tr>
+      	</table>
+	</div>
+	
+	
+      
+  	<div class="outerContainer">
+    	<div class="innerContainer">
+<!-- To Do -->
+      		<div class="todoContainer">
+        		<table width="100%">
+          			<tr>
+        				<td width="14.25%">
+              				<div class="status" id="Monday">
+                				<h1>Monday&nbsp;<a th:href="@{'/addTask/' + 'Monday'}" class="add">+</a></h1>
+                				
+			    				<div th:each="task : ${listTasks}">
+			    				<th:block th:if="${task.user_id==user.user_id}">
+			    				<th:block th:if="${task.status=='Monday'}">
+									<div class="todo" draggable="true">
+										<table class="task">
+											<!-- Row 1: Title + Edit & Delete -->
+											<tr>
+												<th id="title" th:text="${task.title}" style="border:none;"></th>
+												<td style="text-align: right;">
+													<a th:href="@{'/edit/' + ${task.task_id}}" ><i class="fa fa-pencil" style="text-align: center;color: blue;padding: 5px;text-decoration: none;"></i></a>
+												</td>
+												<td>
+													<a th:href="@{'/delete/' + ${task.task_id}}" style="text-decoration: none;font-size: 120%;text-align: center;color: blue;padding: 5px;">&times;</a>
+												</td>
+											</tr>
+											<!-- Row 2: Category -->
+											<tr>
+												<th:block th:if="${task.category!='None'}">
+													<td colspan="3" id="category" th:text="${task.category}"></td>
+												</th:block>
+											</tr>
+											<!--  Row 3: Description -->
+											<tr>
+												<th:block th:if="${task.description!=''}">
+													<td id="description" th:text="${task.description}" colspan="3" style="border-bottom: 1px solid grey; padding: 10px; margin-bottom: 4px; vertical-align: top;"></td>
+												</th:block>
+											</tr>
+											<!-- Row 4: Due Date -->
+											<tr>
+												<th:block th:if="${task.dueDate!=''}">
+													<td id="dueDate" th:text="Due + ' ' + ${task.dueDate}" colspan="3"></td>
+												</th:block>
+												<th:block th:if="${task.dueDate==''}">
+													<td id="dueDate" th:text="' '" colspan="3"></td>
+												</th:block>
+											</tr>
+											<!--  Row 5: Priority -->
+											<tr>
+												<td th:with="pid=${task.priority}" th:id="${pid}" th:text="${task.priority}"></td>
+											</tr>
+										</table>
+										<form action="#" th:action="@{/status}" th:object="${task}" method="post" class="statusForm">
+											<input type="text" th:field="*{status}" id="statusValue" readonly hidden/>
+											<h6 class="idGet" th:with="tid=${task.task_id}" th:text="${tid}" hidden></h6>
+											<input type="text" class="idValue" th:field="*{task_id}" readonly hidden></input>
+											<input type="submit" value="Save" hidden>
+										</form>
+									</div>
+								</th:block>	
+								</th:block>
+								</div>
+								
+							</div>
+        				</td>
+            			<td width="14.25%">
+              				<div class="status" id="Tuesday">
+               					<h1>Tuesday&nbsp;<a th:href="@{'/addTask/' + 'Tuesday'}" class="add">+</a></h1>
+               					<div th:each="task : ${listTasks}">
+               					<th:block th:if="${task.user_id==user.user_id}">
+			    				<th:block th:if="${task.status=='Tuesday'}">
+									<div class="todo" draggable="true">
+										<table class="task">
+											<!-- Row 1: Title + Edit & Delete -->
+											<tr>
+												<th id="title" th:text="${task.title}" style="border:none;"></th>
+												<td style="text-align: right;">
+													<a th:href="@{'/edit/' + ${task.task_id}}" ><i class="fa fa-pencil" style="text-align: center;color: blue;padding: 5px;text-decoration: none;"></i></a>
+												</td>
+												<td>
+													<a th:href="@{'/delete/' + ${task.task_id}}" style="text-decoration: none;font-size: 120%;text-align: center;color: blue;padding: 5px;">&times;</a>
+												</td>
+											</tr>
+											<!-- Row 2: Category -->
+											<tr>
+												<th:block th:if="${task.category!='None'}">
+													<td colspan="3" id="category" th:text="${task.category}"></td>
+												</th:block>
+											</tr>
+											<!--  Row 3: Description -->
+											<tr>
+												<th:block th:if="${task.description!=''}">
+													<td id="description" th:text="${task.description}" colspan="3" style="border-bottom: 1px solid grey; padding: 10px; margin-bottom: 4px; vertical-align: top;"></td>
+												</th:block>
+											</tr>
+											<!-- Row 4: Due Date -->
+											<tr>
+												<th:block th:if="${task.dueDate!=''}">
+													<td id="dueDate" th:text="Due + ' ' + ${task.dueDate}" colspan="3"></td>
+												</th:block>
+												<th:block th:if="${task.dueDate==''}">
+													<td id="dueDate" th:text="' '" colspan="3"></td>
+												</th:block>
+											</tr>
+											<!--  Row 5: Priority -->
+											<tr>
+												<td th:with="pid=${task.priority}" th:id="${pid}" th:text="${task.priority}"></td>
+											</tr>
+										</table>
+										<form action="#" th:action="@{/status}" th:object="${task}" method="post" class="statusForm">
+											<input type="text" th:field="*{status}" id="statusValue" readonly hidden/>
+											<h6 class="idGet" th:with="tid=${task.task_id}" th:text="${tid}" hidden></h6>
+											<input type="text" class="idValue" th:field="*{task_id}" readonly hidden></input>
+											<input type="submit" value="Save" hidden>
+										</form>
+									</div>
+								</th:block>	
+								</th:block>
+								</div>
+              				</div>
+            			</td>
+            			<td width="14.25%">
+              				<div class="status" id="Wednesday">
+                				<h1>Wednesday&nbsp;<a th:href="@{'/addTask/' + 'Wednesday'}" class="add">+</a></h1>
+                				<div th:each="task : ${listTasks}">
+                				<th:block th:if="${task.user_id==user.user_id}">
+			    				<th:block th:if="${task.status=='Wednesday'}">
+									<div class="todo" draggable="true">
+										<table class="task">
+											<!-- Row 1: Title + Edit & Delete -->
+											<tr>
+												<th id="title" th:text="${task.title}" style="border:none;"></th>
+												<td style="text-align: right;">
+													<a th:href="@{'/edit/' + ${task.task_id}}" ><i class="fa fa-pencil" style="text-align: center;color: blue;padding: 5px;text-decoration: none;"></i></a>
+												</td>
+												<td>
+													<a th:href="@{'/delete/' + ${task.task_id}}" style="text-decoration: none;font-size: 120%;text-align: center;color: blue;padding: 5px;">&times;</a>
+												</td>
+											</tr>
+											<!-- Row 2: Category -->
+											<tr>
+												<th:block th:if="${task.category!='None'}">
+													<td colspan="3" id="category" th:text="${task.category}"></td>
+												</th:block>
+											</tr>
+											<!--  Row 3: Description -->
+											<tr>
+												<th:block th:if="${task.description!=''}">
+													<td id="description" th:text="${task.description}" colspan="3" style="border-bottom: 1px solid grey; padding: 10px; margin-bottom: 4px; vertical-align: top;"></td>
+												</th:block>
+											</tr>
+											<!-- Row 4: Due Date -->
+											<tr>
+												<th:block th:if="${task.dueDate!=''}">
+													<td id="dueDate" th:text="Due + ' ' + ${task.dueDate}" colspan="3"></td>
+												</th:block>
+												<th:block th:if="${task.dueDate==''}">
+													<td id="dueDate" th:text="' '" colspan="3"></td>
+												</th:block>
+											</tr>
+											<!--  Row 5: Priority -->
+											<tr>
+												<td th:with="pid=${task.priority}" th:id="${pid}" th:text="${task.priority}"></td>
+											</tr>
+										</table>
+										<form action="#" th:action="@{/status}" th:object="${task}" method="post" class="statusForm">
+											<input type="text" th:field="*{status}" id="statusValue" readonly hidden/>
+											<h6 class="idGet" th:with="tid=${task.task_id}" th:text="${tid}" hidden></h6>
+											<input type="text" class="idValue" th:field="*{task_id}" readonly hidden></input>
+											<input type="submit" value="Save" hidden>
+										</form>
+									</div>
+								</th:block>	
+								</th:block>
+								</div>
+              				</div>
+            			</td>
+            			<td width="14.25%">
+              				<div class="status" id="Thursday">
+                				<h1>Thursday&nbsp;<a th:href="@{'/addTask/' + 'Thursday'}" class="add">+</a></h1>
+                				<div th:each="task : ${listTasks}">
+                				<th:block th:if="${task.user_id==user.user_id}">
+			    				<th:block th:if="${task.status=='Thursday'}">
+									<div class="todo" draggable="true">
+										<table class="task">
+											<!-- Row 1: Title + Edit & Delete -->
+											<tr>
+												<th id="title" th:text="${task.title}" style="border:none;"></th>
+												<td style="text-align: right;">
+													<a th:href="@{'/edit/' + ${task.task_id}}" ><i class="fa fa-pencil" style="text-align: center;color: blue;padding: 5px;text-decoration: none;"></i></a>
+												</td>
+												<td>
+													<a th:href="@{'/delete/' + ${task.task_id}}" style="text-decoration: none;font-size: 120%;text-align: center;color: blue;padding: 5px;">&times;</a>
+												</td>
+											</tr>
+											<!-- Row 2: Category -->
+											<tr>
+												<th:block th:if="${task.category!='None'}">
+													<td colspan="3" id="category" th:text="${task.category}"></td>
+												</th:block>
+											</tr>
+											<!--  Row 3: Description -->
+											<tr>
+												<th:block th:if="${task.description!=''}">
+													<td id="description" th:text="${task.description}" colspan="3" style="border-bottom: 1px solid grey; padding: 10px; margin-bottom: 4px; vertical-align: top;"></td>
+												</th:block>
+											</tr>
+											<!-- Row 4: Due Date -->
+											<tr>
+												<th:block th:if="${task.dueDate!=''}">
+													<td id="dueDate" th:text="Due + ' ' + ${task.dueDate}" colspan="3"></td>
+												</th:block>
+												<th:block th:if="${task.dueDate==''}">
+													<td id="dueDate" th:text="' '" colspan="3"></td>
+												</th:block>
+											</tr>
+											<!--  Row 5: Priority -->
+											<tr>
+												<td th:with="pid=${task.priority}" th:id="${pid}" th:text="${task.priority}"></td>
+											</tr>
+										</table>
+										<form action="#" th:action="@{/status}" th:object="${task}" method="post" class="statusForm">
+											<input type="text" th:field="*{status}" id="statusValue" readonly hidden/>
+											<h6 class="idGet" th:with="tid=${task.task_id}" th:text="${tid}" hidden></h6>
+											<input type="text" class="idValue" th:field="*{task_id}" readonly hidden></input>
+											<input type="submit" value="Save" hidden>
+										</form>
+									</div>
+								</th:block>	
+								</th:block>
+								</div>
+              				</div>
+            			</td>
+            			<td width="14.25%">
+              				<div class="status" id="Friday">
+                				<h1>Friday&nbsp;<a th:href="@{'/addTask/' + 'Friday'}" class="add">+</a></h1>
+                				<div th:each="task : ${listTasks}">
+                				<th:block th:if="${task.user_id==user.user_id}">
+			    				<th:block th:if="${task.status=='Friday'}">
+									<div class="todo" draggable="true">
+										<table class="task">
+											<!-- Row 1: Title + Edit & Delete -->
+											<tr>
+												<th id="title" th:text="${task.title}" style="border:none;"></th>
+												<td style="text-align: right;">
+													<a th:href="@{'/edit/' + ${task.task_id}}" ><i class="fa fa-pencil" style="text-align: center;color: blue;padding: 5px;text-decoration: none;"></i></a>
+												</td>
+												<td>
+													<a th:href="@{'/delete/' + ${task.task_id}}" style="text-decoration: none;font-size: 120%;text-align: center;color: blue;padding: 5px;">&times;</a>
+												</td>
+											</tr>
+											<!-- Row 2: Category -->
+											<tr>
+												<th:block th:if="${task.category!='None'}">
+													<td colspan="3" id="category" th:text="${task.category}"></td>
+												</th:block>
+											</tr>
+											<!--  Row 3: Description -->
+											<tr>
+												<th:block th:if="${task.description!=''}">
+													<td id="description" th:text="${task.description}" colspan="3" style="border-bottom: 1px solid grey; padding: 10px; margin-bottom: 4px; vertical-align: top;"></td>
+												</th:block>
+											</tr>
+											<!-- Row 4: Due Date -->
+											<tr>
+												<th:block th:if="${task.dueDate!=''}">
+													<td id="dueDate" th:text="Due + ' ' + ${task.dueDate}" colspan="3"></td>
+												</th:block>
+												<th:block th:if="${task.dueDate==''}">
+													<td id="dueDate" th:text="' '" colspan="3"></td>
+												</th:block>
+											</tr>
+											<!--  Row 5: Priority -->
+											<tr>
+												<td th:with="pid=${task.priority}" th:id="${pid}" th:text="${task.priority}"></td>
+											</tr>
+										</table>
+										<form action="#" th:action="@{/status}" th:object="${task}" method="post" class="statusForm">
+											<input type="text" th:field="*{status}" id="statusValue" readonly hidden/>
+											<h6 class="idGet" th:with="tid=${task.task_id}" th:text="${tid}" hidden></h6>
+											<input type="text" class="idValue" th:field="*{task_id}" readonly hidden></input>
+											<input type="submit" value="Save" hidden>
+										</form>
+									</div>
+								</th:block>	
+								</th:block>
+								</div>
+              				</div>
+            			</td>
+            			<td width="14.25%">
+              				<div class="status" id="Saturday">
+                				<h1>Saturday&nbsp;<a th:href="@{'/addTask/' + 'Saturday'}" class="add">+</a></h1>
+                				<div th:each="task : ${listTasks}">
+                				<th:block th:if="${task.user_id==user.user_id}">
+			    				<th:block th:if="${task.status=='Saturday'}">
+									<div class="todo" draggable="true">
+										<table class="task">
+											<!-- Row 1: Title + Edit & Delete -->
+											<tr>
+												<th id="title" th:text="${task.title}" style="border:none;"></th>
+												<td style="text-align: right;">
+													<a th:href="@{'/edit/' + ${task.task_id}}" ><i class="fa fa-pencil" style="text-align: center;color: blue;padding: 5px;text-decoration: none;"></i></a>
+												</td>
+												<td>
+													<a th:href="@{'/delete/' + ${task.task_id}}" style="text-decoration: none;font-size: 120%;text-align: center;color: blue;padding: 5px;">&times;</a>
+												</td>
+											</tr>
+											<!-- Row 2: Category -->
+											<tr>
+												<th:block th:if="${task.category!='None'}">
+													<td colspan="3" id="category" th:text="${task.category}"></td>
+												</th:block>
+											</tr>
+											<!--  Row 3: Description -->
+											<tr>
+												<th:block th:if="${task.description!=''}">
+													<td id="description" th:text="${task.description}" colspan="3" style="border-bottom: 1px solid grey; padding: 10px; margin-bottom: 4px; vertical-align: top;"></td>
+												</th:block>
+											</tr>
+											<!-- Row 4: Due Date -->
+											<tr>
+												<th:block th:if="${task.dueDate!=''}">
+													<td id="dueDate" th:text="Due + ' ' + ${task.dueDate}" colspan="3"></td>
+												</th:block>
+												<th:block th:if="${task.dueDate==''}">
+													<td id="dueDate" th:text="' '" colspan="3"></td>
+												</th:block>
+											</tr>
+											<!--  Row 5: Priority -->
+											<tr>
+												<td th:with="pid=${task.priority}" th:id="${pid}" th:text="${task.priority}"></td>
+											</tr>
+										</table>
+										<form action="#" th:action="@{/status}" th:object="${task}" method="post" class="statusForm">
+											<input type="text" th:field="*{status}" id="statusValue" readonly hidden/>
+											<h6 class="idGet" th:with="tid=${task.task_id}" th:text="${tid}" hidden></h6>
+											<input type="text" class="idValue" th:field="*{task_id}" readonly hidden></input>
+											<input type="submit" value="Save" hidden>
+										</form>
+									</div>
+								</th:block>	
+								</th:block>
+								</div>
+              				</div>
+            			</td>
+            			<td width="14.25%">
+              				<div class="status" id="Sunday">
+               					<h1>Sunday&nbsp;<a th:href="@{'/addTask/' + 'Sunday'}" class="add">+</a></h1>
+               					<div th:each="task : ${listTasks}">
+               					<th:block th:if="${task.user_id==user.user_id}">
+			    				<th:block th:if="${task.status=='Sunday'}">
+									<div class="todo" draggable="true">
+										<table class="task">
+											<!-- Row 1: Title + Edit & Delete -->
+											<tr>
+												<th id="title" th:text="${task.title}" style="border:none;"></th>
+												<td style="text-align: right;">
+													<a th:href="@{'/edit/' + ${task.task_id}}" ><i class="fa fa-pencil" style="text-align: center;color: blue;padding: 5px;text-decoration: none;"></i></a>
+												</td>
+												<td>
+													<a th:href="@{'/delete/' + ${task.task_id}}" style="text-decoration: none;font-size: 120%;text-align: center;color: blue;padding: 5px;">&times;</a>
+												</td>
+											</tr>
+											<!-- Row 2: Category -->
+											<tr>
+												<th:block th:if="${task.category!='None'}">
+													<td colspan="3" id="category" th:text="${task.category}"></td>
+												</th:block>
+											</tr>
+											<!--  Row 3: Description -->
+											<tr>
+												<th:block th:if="${task.description!=''}">
+													<td id="description" th:text="${task.description}" colspan="3" style="border-bottom: 1px solid grey; padding: 10px; margin-bottom: 4px; vertical-align: top;"></td>
+												</th:block>
+											</tr>
+											<!-- Row 4: Due Date -->
+											<tr>
+												<th:block th:if="${task.dueDate!=''}">
+													<td id="dueDate" th:text="Due + ' ' + ${task.dueDate}" colspan="3"></td>
+												</th:block>
+												<th:block th:if="${task.dueDate==''}">
+													<td id="dueDate" th:text="' '" colspan="3"></td>
+												</th:block>
+											</tr>
+											<!--  Row 5: Priority -->
+											<tr>
+												<td th:with="pid=${task.priority}" th:id="${pid}" th:text="${task.priority}"></td>
+											</tr>
+										</table>
+										<form action="#" th:action="@{/status}" th:object="${task}" method="post" class="statusForm">
+											<input type="text" th:field="*{status}" id="statusValue" readonly hidden/>
+											<h6 class="idGet" th:with="tid=${task.task_id}" th:text="${tid}" hidden></h6>
+											<input type="text" class="idValue" th:field="*{task_id}" readonly hidden></input>
+											<input type="submit" value="Save" hidden>
+										</form>
+									</div>
+								</th:block>	
+								</th:block>
+								</div>
+              				</div>
+            			</td>
+          			</tr>
+        		</table>
+     		</div>
+    	</div>      
+  	</div>
+	<script>
+	const todos = document.querySelectorAll(".todo");
+	const all_status = document.querySelectorAll(".status");
+	let draggableTodo = null;
+
+	todos.forEach((todo) => {
+		todo.addEventListener("dragstart", dragStart);
+		todo.addEventListener("dragend", dragEnd);
+	});
+
+	function dragStart() {
+		draggableTodo = this;
+	}
+
+	function dragEnd() {
+		draggableTodo = null;
+	}
+
+	all_status.forEach((status) => {
+		status.addEventListener("dragover", dragOver);
+		status.addEventListener("dragenter", dragEnter);
+		status.addEventListener("dragleave", dragLeave);
+		status.addEventListener("drop", dragDrop);
+	});
+
+	function dragOver(e) {
+		//by default, dragging into an element is disabled
+		e.preventDefault();
+	}
+
+	function dragEnter() {
+		this.style.border = '1px dashed #ccc';
+	}
+
+	function dragLeave() {
+		this.style.border = "none";
+	}
+
+	function dragDrop() {
+		this.style.border = "none";
+		this.appendChild(draggableTodo);
+//STATUS GET
+		if (this.id == "Monday"){
+			let listLength = document.querySelectorAll("#Monday input#statusValue").length;
+			let selection = listLength - 1; 
+			document.querySelectorAll("#Monday input#statusValue")[selection].value = this.id;
+			
+			let listLength3 = document.querySelectorAll("#Monday h6").length;
+			let selection3 = listLength3 - 1;
+			
+			let listLength2 = document.querySelectorAll("#Monday input.idValue").length;
+			let selection2 = listLength2 - 1; 
+			document.querySelectorAll("#Monday input.idValue")[selection2].value = document.querySelectorAll("#Monday h6")[selection3].innerHTML;
+			
+			let listLength4 = document.querySelectorAll("#Monday .statusForm").length;
+			let selection4 = listLength4 - 1;
+			document.querySelectorAll("#Monday .statusForm")[selection4].submit();
+		}
+		if (this.id == "Tuesday"){
+			let listLength = document.querySelectorAll("#Tuesday input#statusValue").length;
+			let selection = listLength - 1; 
+			document.querySelectorAll("#Tuesday input#statusValue")[selection].value = this.id;
+			
+			let listLength3 = document.querySelectorAll("#Tuesday h6").length;
+			let selection3 = listLength3 - 1;
+			
+			let listLength2 = document.querySelectorAll("#Tuesday input.idValue").length;
+			let selection2 = listLength2 - 1; 
+			document.querySelectorAll("#Tuesday input.idValue")[selection2].value = document.querySelectorAll("#Tuesday h6")[selection3].innerHTML;
+			
+			let listLength4 = document.querySelectorAll("#Tuesday .statusForm").length;
+			let selection4 = listLength4 - 1;
+			document.querySelectorAll("#Tuesday .statusForm")[selection4].submit();
+		}
+		if (this.id == "Wednesday"){
+			let listLength = document.querySelectorAll("#Wednesday input#statusValue").length;
+			let selection = listLength - 1; 
+			document.querySelectorAll("#Wednesday input#statusValue")[selection].value = this.id;
+			
+			let listLength3 = document.querySelectorAll("#Wednesday h6").length;
+			let selection3 = listLength3 - 1;
+			
+			let listLength2 = document.querySelectorAll("#Wednesday input.idValue").length;
+			let selection2 = listLength2 - 1; 
+			document.querySelectorAll("#Wednesday input.idValue")[selection2].value = document.querySelectorAll("#Wednesday h6")[selection3].innerHTML;
+			
+			let listLength4 = document.querySelectorAll("#Wednesday .statusForm").length;
+			let selection4 = listLength4 - 1;
+			document.querySelectorAll("#Wednesday .statusForm")[selection4].submit();
+		}
+		if (this.id == "Thursday"){
+			let listLength = document.querySelectorAll("#Thursday input#statusValue").length;
+			let selection = listLength - 1; 
+			document.querySelectorAll("#Thursday input#statusValue")[selection].value = this.id;
+			
+			let listLength3 = document.querySelectorAll("#Thursday h6").length;
+			let selection3 = listLength3 - 1;
+			
+			let listLength2 = document.querySelectorAll("#Thursday input.idValue").length;
+			let selection2 = listLength2 - 1; 
+			document.querySelectorAll("#Thursday input.idValue")[selection2].value = document.querySelectorAll("#Thursday h6")[selection3].innerHTML;
+			
+			let listLength4 = document.querySelectorAll("#Thursday .statusForm").length;
+			let selection4 = listLength4 - 1;
+			document.querySelectorAll("#Thursday .statusForm")[selection4].submit();
+		}
+		if (this.id == "Friday"){
+			let listLength = document.querySelectorAll("#Friday input#statusValue").length;
+			let selection = listLength - 1; 
+			document.querySelectorAll("#Friday input#statusValue")[selection].value = this.id;
+			
+			let listLength3 = document.querySelectorAll("#Friday h6").length;
+			let selection3 = listLength3 - 1;
+			
+			let listLength2 = document.querySelectorAll("#Friday input.idValue").length;
+			let selection2 = listLength2 - 1; 
+			document.querySelectorAll("#Friday input.idValue")[selection2].value = document.querySelectorAll("#Friday h6")[selection3].innerHTML;
+			
+			let listLength4 = document.querySelectorAll("#Friday .statusForm").length;
+			let selection4 = listLength4 - 1;
+			document.querySelectorAll("#Friday .statusForm")[selection4].submit();
+		}
+		if (this.id == "Saturday"){
+			let listLength = document.querySelectorAll("#Saturday input#statusValue").length;
+			let selection = listLength - 1; 
+			document.querySelectorAll("#Saturday input#statusValue")[selection].value = this.id;
+			
+			let listLength3 = document.querySelectorAll("#Saturday h6").length;
+			let selection3 = listLength3 - 1;
+			
+			let listLength2 = document.querySelectorAll("#Saturday input.idValue").length;
+			let selection2 = listLength2 - 1; 
+			document.querySelectorAll("#Saturday input.idValue")[selection2].value = document.querySelectorAll("#Saturday h6")[selection3].innerHTML;
+			
+			let listLength4 = document.querySelectorAll("#Saturday .statusForm").length;
+			let selection4 = listLength4 - 1;
+			document.querySelectorAll("#Saturday .statusForm")[selection4].submit();
+		}
+		if (this.id == "Sunday"){
+			let listLength = document.querySelectorAll("#Sunday input#statusValue").length;
+			let selection = listLength - 1; 
+			document.querySelectorAll("#Sunday input#statusValue")[selection].value = this.id;
+			
+			let listLength3 = document.querySelectorAll("#Sunday h6").length;
+			let selection3 = listLength3 - 1;
+			
+			let listLength2 = document.querySelectorAll("#Sunday input.idValue").length;
+			let selection2 = listLength2 - 1; 
+			document.querySelectorAll("#Sunday input.idValue")[selection2].value = document.querySelectorAll("#Sunday h6")[selection3].innerHTML;
+			
+			let listLength4 = document.querySelectorAll("#Sunday .statusForm").length;
+			let selection4 = listLength4 - 1;
+			document.querySelectorAll("#Sunday .statusForm")[selection4].submit();
+		}
+	}
+	</script>
+</body>
+</html>
